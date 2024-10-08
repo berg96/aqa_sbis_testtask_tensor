@@ -23,10 +23,10 @@ class BasePage:
             message=f"Can't find elements by locator {locator}"
         )
 
-    def wait_element(self, locator, time=10):
-        return WebDriverWait(self.driver, time).until(
-            EC.visibility_of_element_located(locator)
-        )
-
     def go_to_site(self):
         return self.driver.get(self.base_url)
+
+    def wait_element(self, locator, time=10):
+        return WebDriverWait(self.driver, time).until(
+        EC.visibility_of_element_located(locator)
+    )

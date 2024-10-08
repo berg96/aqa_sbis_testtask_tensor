@@ -6,6 +6,9 @@ class SbisLocators:
     CONTACTS = (By.CLASS_NAME, 'sbisru-Header-ContactsMenu')
     MORE_OFFICES = (By.CLASS_NAME, 'sbisru-Header-ContactsMenu__arrow-icon')
     TENSOR_BANNER = (By.CLASS_NAME, 'sbisru-Contacts__logo-tensor')
+    REGION = (By.CLASS_NAME, 'sbis_ru-Region-Chooser__text')
+    PARTNERS = (By.CLASS_NAME, 'sbisru-Contacts-List__name')
+    KAMCHATKA = (By.CSS_SELECTOR, 'span[title="Камчатский край"]')
 
 
 class TensorLocators:
@@ -17,11 +20,13 @@ class TensorLocators:
     )
 
 
-class PhotoChecker(BasePage):
+class SbisContacts(BasePage):
     def go_to_contacts(self):
         self.find_element(SbisLocators.CONTACTS, time=2).click()
         return self.find_element(SbisLocators.MORE_OFFICES, time=5).click()
 
+
+class PhotoChecker(SbisContacts):
     def click_on_tensor(self):
         return self.find_element(SbisLocators.TENSOR_BANNER,time=2).click()
 
@@ -45,3 +50,19 @@ class PhotoChecker(BasePage):
             for photo in photos
         ]
 
+
+class RegionChanger(SbisContacts):
+    def find_region(self):
+        return self.find_element(SbisLocators.REGION, time=2)
+
+    def get_region(self):
+        return self.find_region().text
+
+    def get_partners(self):
+        partners = self.find_elements(SbisLocators.PARTNERS, time=2)
+        return [partner.text for partner in partners]
+
+    def change_region(self):
+        self.find_region().click()
+        self.find_element(SbisLocators.KAMCHATKA, time=10).click()
+        return self.wait_element(SbisLocators.REGION, time=10)
