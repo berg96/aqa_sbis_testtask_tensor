@@ -1,0 +1,47 @@
+from base_app import BasePage
+from selenium.webdriver.common.by import By
+
+
+class SbisLocators:
+    CONTACTS = (By.CLASS_NAME, 'sbisru-Header-ContactsMenu')
+    MORE_OFFICES = (By.CLASS_NAME, 'sbisru-Header-ContactsMenu__arrow-icon')
+    TENSOR_BANNER = (By.CLASS_NAME, 'sbisru-Contacts__logo-tensor')
+
+
+class TensorLocators:
+    POWER_IN_PEOPLE = (By.CLASS_NAME, 'tensor_ru-Index__block4-content')
+    POWER_IN_PEOPLE_TITLE = (By.CLASS_NAME, 'tensor_ru-Index__card-title')
+    POWER_IN_PEOPLE_ABOUT = (By.CLASS_NAME, 'tensor_ru-link')
+    WORK_PHOTOS = (
+        By.CSS_SELECTOR, '.tensor_ru-About__block3-image-wrapper img'
+    )
+
+
+class PhotoChecker(BasePage):
+    def go_to_contacts(self):
+        self.find_element(SbisLocators.CONTACTS, time=2).click()
+        return self.find_element(SbisLocators.MORE_OFFICES, time=5).click()
+
+    def click_on_tensor(self):
+        return self.find_element(SbisLocators.TENSOR_BANNER,time=2).click()
+
+    def find_block_power_in_people(self):
+        return self.find_element(TensorLocators.POWER_IN_PEOPLE, time=2)
+
+    def find_title_power_in_people(self):
+        return self.find_block_power_in_people().find_element(
+            *TensorLocators.POWER_IN_PEOPLE_TITLE
+        )
+
+    def click_about(self):
+        return self.find_block_power_in_people().find_element(
+            *TensorLocators.POWER_IN_PEOPLE_ABOUT
+        ).click()
+
+    def find_work_photos(self):
+        photos = self.find_elements(TensorLocators.WORK_PHOTOS, time=2)
+        return [
+            (photo.get_attribute('width'), photo.get_attribute('height'))
+            for photo in photos
+        ]
+
