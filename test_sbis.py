@@ -1,4 +1,7 @@
-from sbis_pages import PhotoChecker, RegionChanger
+import os
+import time
+
+from sbis_pages import PhotoChecker, RegionChanger, FileDownloader
 
 
 def test_tensor_photos(browser):
@@ -32,3 +35,21 @@ def test_change_region(browser):
         '/'
     )[4].split('?')[0] == '41-kamchatskij-kraj'
     assert browser.title.split('—')[1].strip() == 'Камчатский край'
+
+
+def test_download_file(browser):
+    driver = FileDownloader(browser)
+    driver.go_to_site()
+    file_size = float(driver.download_file().split(' ')[2])
+    driver.wait_for_download_complete(os.getcwd())
+    assert any(
+        filename.endswith('.exe') for filename in os.listdir(os.getcwd())
+    )
+    assert (
+       round(
+           (os.path.getsize(
+               os.path.join(os.getcwd(), 'sbisplugin-setup-web.exe')
+           ) / (1024 * 1024)),
+           2
+       )
+    ) == file_size

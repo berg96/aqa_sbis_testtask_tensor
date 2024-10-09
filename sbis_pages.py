@@ -9,6 +9,13 @@ class SbisLocators:
     REGION = (By.CLASS_NAME, 'sbis_ru-Region-Chooser__text')
     PARTNERS = (By.CLASS_NAME, 'sbisru-Contacts-List__name')
     KAMCHATKA = (By.CSS_SELECTOR, 'span[title="Камчатский край"]')
+    DOWNLOAD = (By.CSS_SELECTOR, '.sbisru-Footer__link[href="/download"]')
+    SBIS_PLUGIN = (
+        By.XPATH,
+        '//div[@class="controls-TabButton__caption" and text()="СБИС Плагин"]'
+    )
+    WINDOWS = (By.XPATH, '//span[text()="Windows"]')
+    DOWNLOAD_BUTTON = (By.CLASS_NAME, 'sbis_ru-DownloadNew-loadLink__link')
 
 
 class TensorLocators:
@@ -65,4 +72,16 @@ class RegionChanger(SbisContacts):
     def change_region(self):
         self.find_region().click()
         self.find_element(SbisLocators.KAMCHATKA, time=10).click()
-        return self.wait_element(SbisLocators.REGION, time=10)
+        return self.wait_change_text(
+            SbisLocators.REGION, text='Камчатский край'
+        )
+
+
+class FileDownloader(BasePage):
+    def download_file(self):
+        self.find_element(SbisLocators.DOWNLOAD, time=2).click()
+        self.find_element(SbisLocators.SBIS_PLUGIN, time=2).click()
+        self.find_element(SbisLocators.WINDOWS, time=2).click()
+        download_button = self.find_elements(SbisLocators.DOWNLOAD_BUTTON, time=2)[0]
+        download_button.click()
+        return download_button.text

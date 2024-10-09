@@ -1,3 +1,5 @@
+import os
+
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -26,7 +28,17 @@ class BasePage:
     def go_to_site(self):
         return self.driver.get(self.base_url)
 
-    def wait_element(self, locator, time=10):
+    def wait_change_text(self, locator, text, time=10):
         return WebDriverWait(self.driver, time).until(
-        EC.visibility_of_element_located(locator)
+        EC.text_to_be_present_in_element(locator, text)
     )
+
+    def wait_for_download_complete(
+        self, download_dir, end_of_filename='.exe', time=30
+    ):
+        WebDriverWait(self.driver, time).until(
+            lambda driver: any(
+                filename.endswith(end_of_filename)
+                for filename in os.listdir(download_dir)
+            )
+        )
