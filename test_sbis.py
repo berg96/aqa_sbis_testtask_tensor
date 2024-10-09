@@ -1,7 +1,6 @@
 import os
-import time
 
-from sbis_pages import PhotoChecker, RegionChanger, FileDownloader
+from sbis_pages import FileDownloader, PhotoChecker, RegionChanger
 
 
 def test_tensor_photos(browser):
@@ -16,7 +15,7 @@ def test_tensor_photos(browser):
     photo_sizes = driver.find_work_photos()
     assert all(
         photo_size == photo_sizes[0] for photo_size in photo_sizes
-    ) == True
+    )
 
 
 def test_change_region(browser):
@@ -46,10 +45,10 @@ def test_download_file(browser):
         filename.endswith('.exe') for filename in os.listdir(os.getcwd())
     )
     assert (
-       round(
-           (os.path.getsize(
-               os.path.join(os.getcwd(), 'sbisplugin-setup-web.exe')
-           ) / (1024 * 1024)),
-           2
-       )
+        round(
+            (os.path.getsize(
+                os.path.join(os.getcwd(), 'sbisplugin-setup-web.exe')
+            ) / (1024 * 1024)),
+            2
+        )
     ) == file_size

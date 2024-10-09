@@ -17,6 +17,8 @@ def browser():
         'safebrowsing.enabled': True
     }
     chrome_options.add_experimental_option("prefs", prefs)
+    chrome_options.add_argument("--disable-notifications")
+    chrome_options.add_argument("--start-maximized")
     service = Service(executable_path=ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=chrome_options)
     yield driver

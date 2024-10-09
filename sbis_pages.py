@@ -1,5 +1,6 @@
-from base_app import BasePage
 from selenium.webdriver.common.by import By
+
+from base_app import BasePage
 
 
 class SbisLocators:
@@ -35,7 +36,7 @@ class SbisContacts(BasePage):
 
 class PhotoChecker(SbisContacts):
     def click_on_tensor(self):
-        return self.find_element(SbisLocators.TENSOR_BANNER,time=2).click()
+        return self.find_element(SbisLocators.TENSOR_BANNER, time=2).click()
 
     def find_block_power_in_people(self):
         return self.find_element(TensorLocators.POWER_IN_PEOPLE, time=2)
@@ -82,6 +83,8 @@ class FileDownloader(BasePage):
         self.find_element(SbisLocators.DOWNLOAD, time=2).click()
         self.find_element(SbisLocators.SBIS_PLUGIN, time=2).click()
         self.find_element(SbisLocators.WINDOWS, time=2).click()
-        download_button = self.find_elements(SbisLocators.DOWNLOAD_BUTTON, time=2)[0]
+        download_button = self.find_elements(
+            SbisLocators.DOWNLOAD_BUTTON, time=2
+        )[0]
         download_button.click()
         return download_button.text
